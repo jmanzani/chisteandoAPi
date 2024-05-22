@@ -20,18 +20,16 @@ export const getCategorias = async (req, res) => {
 };
 export const getCategoria = async (req, res) => {
   try {
-    const { id } = req.params;
-    const [rows] = await pool.query("SELECT * FROM categoria WHERE id = ?", [
-      id,
-    ]);
+    const { id } = req.body;
+    const rows = await queryPromise("SELECT * FROM categoria WHERE id = ?", [id]);
 
     if (rows.length <= 0) {
       return res.status(404).json({ message: "Categoria not found" });
     }
 
-    res.json(rows[0]);
+    res.json(rows);
   } catch (error) {
-    return res.status(500).json({ message: "Something goes wrong" });
+    return res.status(500).json({ message: "Something goes wrong" + error });
   }
 };
 export const createCategorias = async (req, res) => {
